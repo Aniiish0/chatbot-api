@@ -10,11 +10,13 @@ app = Flask(__name__)
 @app.route("/ask", methods=["GET"])
 def ask_question():
     question = request.args.get("question")
+    print(">>> Question", question)
     if not question:
         return jsonify({"error": "No question provided."}), 400
 
     # Preprocess the question
     processed_question = preprocess_question(question)
+    print(">>> Processed question:", processed_question)
 
     # Search for the answer
     answer = search_index(processed_question)
