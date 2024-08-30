@@ -1,14 +1,10 @@
 [
     {
-        "question": "What is Flask?",
-        "answer": "Flask is a lightweight WSGI web application framework in Python."
+        "question": "What is the timing?",
+        "answer": "The branch has two seasonal timings: Summer - 7 to 11 & Winter - 8 to 12"
     },
     {
-        "question": "What is an API endpoint?",
-        "answer": "An API endpoint is a URL where an API can be accessed by a client."
-    },
-    {
-        "question": "What is machine learning?",
-        "answer": "Machine learning models are algorithms that learn from data to make predictions or decisions."
+        "question": "What are the total number of students?",
+        "answer": "As of now, the total strength is 91 in the branch. This number will be updated according to the latest information."
     }
 ]

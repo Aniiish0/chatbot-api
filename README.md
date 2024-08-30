@@ -4,7 +4,8 @@
 3. Install `requirements.txt` using: `pip install -r requirements.txt`
 4. Add your data to `knowledge_base.json`
 5. Feed your knowledge base using: `python3 feed_or_search.py`
+6. Setup `.env` file using `.env.example` if you want
 4. Run `api.py` using: `python3 api.py`
-5. Now you can hit `localhost:3000/ask?question=<your_question>`
+5. Now you can hit `localhost:<APP_PORT (set in .env) or 3000 (default)>/ask?question=<your_question>`
 
 Note: `python3` and `python` are interchangeable according to your system.

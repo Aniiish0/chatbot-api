@@ -1,4 +1,5 @@
 .venv
-indexdir
 .idea
 .vscode
+.env
+index_directory
