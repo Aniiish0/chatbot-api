@@ -38,7 +38,7 @@ jobs:
       # Step 5: Run the Flask app in the background
       - name: Run Flask app
         run: |
-          nohup python api.py &
+          nohup python app.py &
         env:
           FLASK_ENV: testing  # Set any necessary environment variables
           APP_PORT: ${{ env.APP_PORT }}
