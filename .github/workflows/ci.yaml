@@ -33,7 +33,7 @@ jobs:
 
       # Step 4: Set environment variables
       - name: Set environment variables
-        run: echo "APP_PORT=5000" >> $GITHUB_ENV
+        run: echo "APP_PORT=5000" >> "$GITHUB_ENV"
 
       # Step 5: Run the Flask app in the background
       - name: Run Flask app
