@@ -60,7 +60,7 @@ jobs:
           git config --local user.name "GitHub Actions"
           git add VERSION
           git commit -m "chore(release): Bump version to ${{ env.NEW_VERSION }}"
-          git tag "v${{ env.NEW_VERSION }}"
+          git tag -a "v${{ env.NEW_VERSION }}" -m "Release"
           git push --follow-tags origin main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
