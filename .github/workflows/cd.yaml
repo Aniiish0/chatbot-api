@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - "chore(release):*"
 
 jobs:
-  docker-build-and-push:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,26 +27,55 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      # Step 4: Set up Docker image tag
-      - name: Set up Docker image tag
-        id: vars
+      # Step 4: Retrieve and bump the version number
+      - name: Get current version
+        id: get_version
         run: |
-          # Set image tag based on branch or tag
-          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
-            echo "IMAGE_TAG=latest" >> $GITHUB_ENV
+          if [ -f VERSION ]; then
+            VERSION=$(cat VERSION)
           else
-            echo "IMAGE_TAG=${{ github.sha }}" >> $GITHUB_ENV
+            VERSION="0.0.0"
           fi
+          echo "Current version: $VERSION"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
-      # Step 5: Build and push the Docker image
+      - name: Bump version number
+        id: bump_version
+        run: |
+          IFS='.' read -r major minor patch <<< "${{ env.VERSION }}"
+          patch=$((patch + 1))
+          NEW_VERSION="$major.$minor.$patch"
+          echo "New version: $NEW_VERSION"
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+
+      # Step 5: Write the new version back to the VERSION file
+      - name: Update VERSION file
+        run: |
+          echo "${{ env.NEW_VERSION }}" > VERSION
+
+      # Step 6: Commit and push the new version file (optional, if you want to store the version)
+      - name: Commit version bump
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "GitHub Actions"
+          git add VERSION
+          git commit -m "chore(release): Bump version to ${{ env.NEW_VERSION }}"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: github.ref == 'refs/heads/main'
+
+      # Step 7: Build and push the Docker image with the new version tag
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: subrat1729/knowledgebase-chatbot:${{ env.IMAGE_TAG }}
+          tags: |
+            subrat1729/knowledgebase-chatbot:${{ env.NEW_VERSION }}
+            subrat1729/knowledgebase-chatbot:latest
 
-      # Step 6: Verify the Docker image is successfully pushed
+      # Step 8: Verify the Docker image is successfully pushed
       - name: Verify image pushed
         run: |
-          echo "Docker image pushed to Docker Hub with tag ${{ env.IMAGE_TAG }}"
+          echo "Docker image pushed to Docker Hub with version ${{ env.NEW_VERSION }}"
