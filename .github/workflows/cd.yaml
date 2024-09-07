@@ -56,11 +56,12 @@ jobs:
       # Step 6: Commit and push the new version file (optional, if you want to store the version)
       - name: Commit version bump
         run: |
-          git config --local user.email "subratpatnaik.email@gmail.com"
-          git config --local user.name "Subrat Kumar Pattanaik"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "GitHub Actions"
           git add VERSION
           git commit -m "chore(release): Bump version to ${{ env.NEW_VERSION }}"
-          git push
+          git tag "v${{ env.NEW_VERSION }}"
+          git push --follow-tags origin main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: github.ref == 'refs/heads/main'
