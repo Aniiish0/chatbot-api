@@ -1,13 +1,12 @@
 import json
 import os
 import shutil
+import argparse
+import sys
 
 from whoosh.index import create_in, open_dir, exists_in
 from whoosh.fields import Schema, TEXT
 from whoosh.qparser import QueryParser
-
-# Define the schema for the knowledge base index
-schema = Schema(question=TEXT(stored=True), answer=TEXT(stored=True))
 
 
 def get_index(directory='index_directory', new=False):
@@ -89,12 +88,34 @@ def add_to_index(entries):
 
 
 if __name__ == "__main__":
-    # Read the knowledge base from the JSON file
-    knowledge_base = read_json("knowledge_base.json")
-    print(">>> Knowledge base preview:", head_data(knowledge_base))
+    # Create a parser object
+    parser = argparse.ArgumentParser(description="Process some input file.")
 
-    # Index the knowledge base
-    add_to_index(knowledge_base)
+    # Add argument for the file path
+    parser.add_argument("input_path", type=str, help="Path to the input file")
+
+    # Parse the arguments
+    args = parser.parse_args()
+
+    # Example: Check if the file exists at the given path
+    if os.path.exists(args.input_path):
+        print(f"File found: {args.input_path}")
+    else:
+        print(f"File not found: {args.input_path}")
+
+    # Define the schema for the knowledge base index
+    schema = Schema(question=TEXT(stored=True), answer=TEXT(stored=True))
+
+    # Read the knowledge base from the JSON file
+    try:
+        knowledge_base = read_json(args.input_path)
+        print(">>> Knowledge base preview:", head_data(knowledge_base))
+
+        # Index the knowledge base
+        add_to_index(knowledge_base)
+    except Exception as e:
+        print(f"Error reading file {args.input_path}: {e}")
+        sys.exit(1)
 
 
 # Function to search the index
