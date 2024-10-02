@@ -45,7 +45,7 @@ jobs:
 
       # Step 6: Wait for the server to start
       - name: Wait for server to start
-        run: sleep 5
+        run: sleep 45
 
       # Step 7: Check /health-check endpoint
       - name: Test /health-check endpoint
