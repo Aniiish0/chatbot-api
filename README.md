@@ -3,15 +3,10 @@
 2. Activate the virtual environment using: `source .venv/bin/activate`
 3. Install `requirements.txt` using: `pip install -r requirements.txt`
 4. Add your data to `knowledge_base.json`
-5. Setup `.env` file using `.env.example` if you want
-### V1 steps (using Whoosh indexing)
-6. Feed your knowledge base using: `python3 helpers/feed_or_search.py`
-7. Run `app.py` using: `python3 app.py`
-8. Now you can hit `GET localhost:<APP_PORT (set in .env) or 5000 (default)>/ask?question=<your_question>`
-### V2 steps (using sentence transformers and ollama model for the out of the box questions)
-6. Install and run `ollama` server and run the command `ollama pull nemotron-mini` to pull the `nemotron-mini` model
-7. Run `app.py` using: `python3 app.py`
-8. Now you can hit `GET localhost:<APP_PORT (set in .env) or 5000 (default)>/v2/ask?question=<your_question>&fallback=llm`.
+5. Feed your knowledge base using: `python3 helpers/feed_or_search.py`
+6. Setup `.env` file using `.env.example` if you want
+4. Run `app.py` using: `python3 app.py`
+5. Now you can hit `localhost:<APP_PORT (set in .env) or 3000 (default)>/ask?question=<your_question>`
 
 Note: `python3` and `python` are interchangeable according to your system.
 
